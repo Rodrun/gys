@@ -1,10 +1,14 @@
-// Due to some fuckery and stuff, testing should be done on the server, I assume
-
+/*
+* Generate a random integer
+* min: Minimum integer
+* max: Maximum integer
+*/
 function genRand(min, max) {
-    return Math.floor((Math.random() * max) + min);
+    return Math.floor((Math.random() * (max + 1)) + min);
 }
 
-var points = 0;
+/* 0: Correct, 1: Incorrect, 2: Pass */
+var score = [0, 0, 0];
 /* Choice button IDs */
 var choiceIds = ["#b1", "#b2", "#b3"];
 /* Generated integers for shoe ID */
@@ -17,29 +21,36 @@ var correctGenerated;
 var correctImg = "images/icon.png";
 
 /*
+* Display the updated score.
+*/
+function renderScoring() {
+    $("#points").text("Correct: " + score[0] + " | Incorrect: " + score[1] + " | Pass: " + score[2]);
+}
+
+/*
 * Display the appropriate message if the answer is correct or not.
 * correct - whether answer was correct or not
 * name - name of the shoe that was correct
 */
 function showCheckDisplay(correct, name) {
     if (correct) {
-        points++;
+        score[0]++;
         alert("Correct! The shoe was '" + name + "'");
     } else {
+        score[1]++;
         alert("Wrong! The shoe was '" + name + "'");
     }
-    $("#points").text(points);
 }
 
 /*
 * Set '.choice' buttons to be disabled.
 * disabled - Set to true of disabled buttons are desired
-*/
+*
 function disableChoices(disabled) {
     $.each(choiceIds, function(i, val) {
         $(val).prop("disabled", disabled);
     });
-}
+}*/
 
 $(document).ready((function() {
     // Load brand data
@@ -64,7 +75,7 @@ $(document).ready((function() {
             // Generate 3 different random integers as choices
             var successfulAdded = 0;
             while (successfulAdded < 3) {
-                var gen = genRand(1, data["max"]); // max = # of 'highest' file name
+                var gen = genRand(1, data["max"] - 1); // max = # of 'highest' file name
                 // Check if integer exists in generated
                 var notExistent = true;
                 var i;
@@ -82,7 +93,7 @@ $(document).ready((function() {
             console.log("generated = " + generated);
 
             // Generate an index for the correct choice
-            correctGenerated = genRand(0, generated.length);
+            correctGenerated = genRand(0, generated.length - 1);
             console.log("correctGenerated = " + correctGenerated);
             console.log("Correct #: " + generated[correctGenerated]);
 
@@ -116,13 +127,16 @@ $(document).ready((function() {
             $(val).text(choiceNames[i]);
         });
     }
-    
-    readyUp();
-    setupPage();
+
+    function next() {
+        renderScoring();
+        readyUp();
+        setupPage();
+    }
+
+    next();
 
     $(choiceIds.join(",")).click(function() {
-        // Disable buttons
-        disableChoices(true);
         // Check if correct
         var correct = false;
         for (b = 0; b < choiceIds.length; b++) {
@@ -132,14 +146,11 @@ $(document).ready((function() {
         }
         // Display appropriately
         showCheckDisplay(correct, choiceNames[correctGenerated]);
+        next();
     });
 
     $("#next").click(function() {
-        // Enable buttons
-        disableChoices(false);
-        // Go again
-        console.log("----going again----");
-        readyUp();
-        setupPage();
+        score[2]++;
+        next();
     });
 }));
