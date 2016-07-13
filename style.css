@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 h1 {
     text-align: center;
 }
@@ -16,23 +15,4 @@ img {
 button {
     display: block;
     position: absolute;
-=======
-h1 {
-    text-align: center;
-}
-
-img {
-    display: block;
-    margin: auto;
-    width: 40%;
-}
-
-.style-button {
-    text-align: center;
-}
-
-button {
-    display: block;
-    position: absolute;
->>>>>>> refs/remotes/origin/master
 }
