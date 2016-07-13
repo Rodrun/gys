@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [{
 	"name": "Air Jordan",
 	"dir": "air_jordan"
@@ -5,3 +6,12 @@
 	"name": "Yeezy Boosts",
 	"dir": "yeezys"
 }]
+=======
+[{
+	"name": "Air Jordan",
+	"dir": "air_jordan"
+}, {
+	"name": "Yeezy Boosts",
+	"dir": "yeezys"
+}]
+>>>>>>> refs/remotes/origin/master
