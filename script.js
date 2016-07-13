@@ -137,6 +137,7 @@ $(document).ready((function() {
     next();
 
     $(choiceIds.join(",")).click(function() {
+        this.blur();
         // Check if correct
         var correct = false;
         for (b = 0; b < choiceIds.length; b++) {
