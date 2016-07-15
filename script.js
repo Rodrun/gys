@@ -21,6 +21,23 @@ var correctGenerated;
 var correctImg = "images/icon.png";
 
 /*
+* Create HTML right/wrong alert.
+* correctname - Name of the correct shoe
+* correct - True if user chose correctly, false otherwise
+* return: string of HTML
+*/
+function createBanner(correctname, correct) {
+    var beginning = "<div class='alert alert-";
+    var close = "</div>"
+    if (correct) {
+        return beginning + "success' style='text-align:center;'><strong>Correct!</strong>" + close;
+    } else {
+        return beginning + "danger'><strong>Wrong!</strong> The shoe was " + correctname + close;
+    }
+    return "<p style='text-align:center;'>???</p>";
+}
+
+/*
 * Display the updated score.
 */
 function renderScoring() {
@@ -33,13 +50,7 @@ function renderScoring() {
 * name - name of the shoe that was correct
 */
 function showCheckDisplay(correct, name) {
-    if (correct) {
-        score[0]++;
-        alert("Correct! The shoe was '" + name + "'");
-    } else {
-        score[1]++;
-        alert("Wrong! The shoe was '" + name + "'");
-    }
+    $("#banner").html(createBanner(name, correct));
 }
 
 /*
@@ -144,6 +155,11 @@ $(document).ready((function() {
             if (this.id == "b" + (correctGenerated+1)) {
                 correct = true;
             }
+        }
+        if (correct) {
+            score[0]++;
+        } else {
+            score[1]++;
         }
         // Display appropriately
         showCheckDisplay(correct, choiceNames[correctGenerated]);
