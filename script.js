@@ -7,6 +7,9 @@ function genRand(min, max) {
     return Math.floor((Math.random() * (max + 1)) + min);
 }
 
+/* List of arrays that contain IDs of shoes to be removed after usage 
+var availabe_shoes = [];*/
+
 /* 0: Correct, 1: Incorrect, 2: Pass */
 var score = [0, 0, 0];
 /* Choice button IDs */
@@ -54,12 +57,19 @@ function showCheckDisplay(correct, name) {
 }
 
 /*
+* Display a 'pass' banner.
+*/
+function showPassDisplay() {
+    $("#banner").html("<div class='alert alert-warning' style='text-align:center;'><strong>Pass</strong></div>");
+}
+
+/*
 * The actual game.
 * brandnumber - Index of selected brand
 */
 function game(brandnumber) {
-    $("#brandselect").hide();
-    $("#game").show();
+    $("#brandselect").hide("slow");
+    $("#game").show("slow");
 
     // Load brand data
     function readyUp() {
@@ -83,10 +93,18 @@ function game(brandnumber) {
             // Generate 3 different random integers as choices
             var successfulAdded = 0;
             while (successfulAdded < 3) {
-                var gen = genRand(1, data["max"] - 1); // max = # of 'highest' file name
+                var gen = genRand(1, data["max"] -1/* available_shoes[availabe_shoes.length - 1]*/);
+                // Check if in available shoes
+                /*var i;
+                for (i = 0; i < availabe_shoes.length; i++ ) {
+                    var b;
+                    for (b = 0; b < availabe_shoes[i].length; b++) {
+                        if (gen == )
+                    }
+                }*/
                 // Check if integer exists in generated
                 var notExistent = true;
-                var i;
+                //var i;
                 for (i = 0; i < generated.length; i++) {
                     if (gen == generated[i]) {
                         notExistent = false;
@@ -165,6 +183,7 @@ function game(brandnumber) {
 
     $("#next").click(function() {
         score[2]++;
+        showPassDisplay();
         next();
     });
 }
