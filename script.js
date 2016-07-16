@@ -54,16 +54,13 @@ function showCheckDisplay(correct, name) {
 }
 
 /*
-* Set '.choice' buttons to be disabled.
-* disabled - Set to true of disabled buttons are desired
-*
-function disableChoices(disabled) {
-    $.each(choiceIds, function(i, val) {
-        $(val).prop("disabled", disabled);
-    });
-}*/
+* The actual game.
+* brandnumber - Index of selected brand
+*/
+function game(brandnumber) {
+    $("#brandselect").hide();
+    $("#game").show();
 
-$(document).ready((function() {
     // Load brand data
     function readyUp() {
     $.ajax({
@@ -72,7 +69,7 @@ $(document).ready((function() {
         async: false,
         success: function(jsondata) {
         // Randomly choose a brand
-        var brand = jsondata[genRand(0, jsondata.length-1)];
+        var brand = jsondata[brandnumber];
         // Load NAME.json in chosen brand directory
         $.ajax({
             url: "data/" + brand["dir"] + "/NAME.json",
@@ -169,5 +166,32 @@ $(document).ready((function() {
     $("#next").click(function() {
         score[2]++;
         next();
+    });
+}
+
+$(document).ready((function() {
+    $("#game").hide();
+    // store button IDs to check on later
+    var button_list = [];
+    $.ajax({
+        url: "data/brands.json",
+        dataType: "json",
+        async: false, // false if breaks everything
+        success: function(data) {
+            /*$.each(data, function(num, value) {
+                // make a button for every brand
+                $("#brandlist").add("<button type='button' class='btn btn-default' id='brandbutton" + num + "'>" + data[num].name + "</button>");
+                button_list.push("brandbutton" + num);
+            });*/
+            var num;
+            for (num = 0; num < data.length; num++) {
+                button_list.push("#brandbutton" + num);
+            }
+        }
+    });
+
+    $(button_list.join(",")).click(function() {
+        console.log(this.id.substr("brandbutton".length, this.id.length));
+        game(parseInt(this.id.substr("brandbutton".length, this.id.length)));
     });
 }));
