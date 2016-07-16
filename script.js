@@ -185,6 +185,7 @@ $(document).ready((function() {
             });*/
             var num;
             for (num = 0; num < data.length; num++) {
+                $("#brandlist").append("<button type='button' class='btn btn-primary' id='brandbutton" + num + "'>" + data[num].name + "</button>");
                 button_list.push("#brandbutton" + num);
             }
         }
