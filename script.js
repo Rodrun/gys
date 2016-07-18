@@ -13,9 +13,9 @@ var availabe_shoes = [];*/
 /* 0: Correct, 1: Incorrect, 2: Pass */
 var score = [0, 0, 0];
 /* Choice button IDs */
-var choiceIds = ["#b1", "#b2", "#b3"];
+var choiceIds = ["#b1", "#b2", "#b3", "#b4"];
 /* Generated integers for shoe ID */
-var generated = new Array(3);
+var generated = new Array(choiceIds.length);
 /* Names of the shoe choices */
 var choiceNames = new Array(generated.length);
 /* The correct answer index for generated */
@@ -92,7 +92,7 @@ function game(brandnumber) {
 
             // Generate 3 different random integers as choices
             var successfulAdded = 0;
-            while (successfulAdded < 3) {
+            while (successfulAdded < generated.length) {
                 var gen = genRand(1, data["max"] -1/* available_shoes[availabe_shoes.length - 1]*/);
                 // Check if in available shoes
                 /*var i;
