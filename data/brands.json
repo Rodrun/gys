@@ -1,4 +1,5 @@
 [{
 	"name": "Air Jordan",
-	"dir": "air_jordan"
+	"dir": "air_jordan",
+	"max": "104"
 }]

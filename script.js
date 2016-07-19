@@ -78,14 +78,7 @@ function game(brandnumber) {
         dataType: "json",
         async: false,
         success: function(jsondata) {
-        // Randomly choose a brand
-        var brand = jsondata[brandnumber];
-        // Load NAME.json in chosen brand directory
-        $.ajax({
-            url: "data/" + brand["dir"] + "/NAME.json",
-            dataType: "json",
-            async: false,
-            success: function(data) {
+            var brand = jsondata[brandnumber];
             console.log("brand dir: " + brand["dir"]);
             var name = brand["name"];
             console.log("name = " + name);
@@ -93,7 +86,7 @@ function game(brandnumber) {
             // Generate 3 different random integers as choices
             var successfulAdded = 0;
             while (successfulAdded < generated.length) {
-                var gen = genRand(1, data["max"] -1/* available_shoes[availabe_shoes.length - 1]*/);
+                var gen = genRand(1, brand["max"] - 1/* available_shoes[availabe_shoes.length - 1]*/);
                 // Check if in available shoes
                 /*var i;
                 for (i = 0; i < availabe_shoes.length; i++ ) {
@@ -143,7 +136,6 @@ function game(brandnumber) {
             console.log("choiceNames = " + choiceNames.join(","));
             console.log("correctImg = " + correctImg);
         }});
-    }});
 
     }
 
@@ -195,16 +187,11 @@ $(document).ready((function() {
     $.ajax({
         url: "data/brands.json",
         dataType: "json",
-        async: false, // false if breaks everything
+        async: false,
         success: function(data) {
-            /*$.each(data, function(num, value) {
-                // make a button for every brand
-                $("#brandlist").add("<button type='button' class='btn btn-default' id='brandbutton" + num + "'>" + data[num].name + "</button>");
-                button_list.push("brandbutton" + num);
-            });*/
-            var num;
+            // Load the available brands
             for (num = 0; num < data.length; num++) {
-                $("#brandlist").append("<button type='button' class='btn btn-primary' id='brandbutton" + num + "'>" + data[num].name + "</button>");
+                $("#brandlist").append("<button type='button' class='btn btn-primary' id='brandbutton" + num + "'>" + data[num].name + " (" + data[num].max + ")</button>");
                 button_list.push("#brandbutton" + num);
             }
         }
