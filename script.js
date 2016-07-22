@@ -13,7 +13,7 @@ var availabe_shoes = [];*/
 /* 0: Correct, 1: Incorrect, 2: Pass */
 var score = [0, 0, 0];
 /* Choice button IDs */
-var choiceIds = ["#b1", "#b2", "#b3", "#b4"];
+var choiceIds = new Array($(".choice").length);
 /* Generated integers for shoe ID */
 var generated = new Array(choiceIds.length);
 /* Names of the shoe choices */
@@ -196,6 +196,11 @@ $(document).ready((function() {
             }
         }
     });
+    
+    // Setup choiceIds to have correct button IDs
+    for (i = 1; i <= choiceIds.length; i++) {
+        choiceIds[i - 1] = "#b" + i;
+    }
 
     $(button_list.join(",")).click(function() {
         console.log(this.id.substr("brandbutton".length, this.id.length));
