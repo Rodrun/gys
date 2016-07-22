@@ -1,8 +1,8 @@
 /*
-* Generate a random integer
-* min: Minimum integer
-* max: Maximum integer
-*/
+ * Generate a random integer
+ * min: Minimum integer
+ * max: Maximum integer
+ */
 function genRand(min, max) {
     return Math.floor((Math.random() * (max + 1)) + min);
 }
@@ -24,11 +24,11 @@ var correctGenerated;
 var correctImg = "images/icon.png";
 
 /*
-* Create HTML right/wrong alert.
-* correctname - Name of the correct shoe
-* correct - True if user chose correctly, false otherwise
-* return: string of HTML
-*/
+ * Create HTML right/wrong alert.
+ * correctname - Name of the correct shoe
+ * correct - True if user chose correctly, false otherwise
+ * return: string of HTML
+ */
 function createBanner(correctname, correct) {
     var beginning = "<div class='alert alert-";
     var close = "</div>"
@@ -41,101 +41,102 @@ function createBanner(correctname, correct) {
 }
 
 /*
-* Display the updated score.
-*/
+ * Display the updated score.
+ */
 function renderScoring() {
     $("#points").text("Correct: " + score[0] + " | Incorrect: " + score[1] + " | Pass: " + score[2]);
 }
 
 /*
-* Display the appropriate message if the answer is correct or not.
-* correct - whether answer was correct or not
-* name - name of the shoe that was correct
-*/
+ * Display the appropriate message if the answer is correct or not.
+ * correct - whether answer was correct or not
+ * name - name of the shoe that was correct
+ */
 function showCheckDisplay(correct, name) {
     $("#banner").html(createBanner(name, correct));
 }
 
 /*
-* Display a 'pass' banner.
-*/
+ * Display a 'pass' banner.
+ */
 function showPassDisplay() {
     $("#banner").html("<div class='alert alert-warning' style='text-align:center;'><strong>Pass</strong></div>");
 }
 
 /*
-* The actual game.
-* brandnumber - Index of selected brand
-*/
+ * The actual game.
+ * brandnumber - Index of selected brand
+ */
 function game(brandnumber) {
     $("#brandselect").hide("slow");
     $("#game").show("slow");
 
     // Load brand data
     function readyUp() {
-    $.ajax({
-        url: "data/brands.json",
-        dataType: "json",
-        async: false,
-        success: function(jsondata) {
-            var brand = jsondata[brandnumber];
-            console.log("brand dir: " + brand["dir"]);
-            var name = brand["name"];
-            console.log("name = " + name);
+        $.ajax({
+            url: "data/brands.json",
+            dataType: "json",
+            async: false,
+            success: function(jsondata) {
+                var brand = jsondata[brandnumber];
+                console.log("brand dir: " + brand["dir"]);
+                var name = brand["name"];
+                console.log("name = " + name);
 
-            // Generate 3 different random integers as choices
-            var successfulAdded = 0;
-            while (successfulAdded < generated.length) {
-                var gen = genRand(1, brand["max"] - 1/* available_shoes[availabe_shoes.length - 1]*/);
-                // Check if in available shoes
-                /*var i;
-                for (i = 0; i < availabe_shoes.length; i++ ) {
-                    var b;
-                    for (b = 0; b < availabe_shoes[i].length; b++) {
-                        if (gen == )
-                    }
-                }*/
-                // Check if integer exists in generated
-                var notExistent = true;
-                //var i;
-                for (i = 0; i < generated.length; i++) {
-                    if (gen == generated[i]) {
-                        notExistent = false;
-                    }
-                }
-                // If integer doesn't exist in generated, add it
-                if (notExistent) {
-                    generated[successfulAdded] = gen;
-                    successfulAdded++;
-                }
-            }
-            console.log("generated = " + generated);
-
-            // Generate an index for the correct choice
-            correctGenerated = genRand(0, generated.length - 1);
-            console.log("correctGenerated = " + correctGenerated);
-            console.log("Correct #: " + generated[correctGenerated]);
-
-            // Get choice names
-            var i;
-            for (i = 0; i < generated.length; i++) {
-                $.ajax({
-                    url: "data/" + brand["dir"] + "/" + generated[i] + ".json",
-                    dataType: "json",
-                    async: false,
-                    success: function(namedata) {
-                        var sname = namedata.name;
-                        choiceNames[i] = name + " " + sname;
-                        // Get the image as well for the correct choice
-                        if (i == correctGenerated) {
-                            correctImg = namedata.img;
+                // Generate 3 different random integers as choices
+                var successfulAdded = 0;
+                while (successfulAdded < generated.length) {
+                    var gen = genRand(1, brand["max"] - 1 /* available_shoes[availabe_shoes.length - 1]*/ );
+                    // Check if in available shoes
+                    /*var i;
+                    for (i = 0; i < availabe_shoes.length; i++ ) {
+                        var b;
+                        for (b = 0; b < availabe_shoes[i].length; b++) {
+                            if (gen == )
+                        }
+                    }*/
+                    // Check if integer exists in generated
+                    var notExistent = true;
+                    //var i;
+                    for (i = 0; i < generated.length; i++) {
+                        if (gen == generated[i]) {
+                            notExistent = false;
                         }
                     }
-                });
+                    // If integer doesn't exist in generated, add it
+                    if (notExistent) {
+                        generated[successfulAdded] = gen;
+                        successfulAdded++;
+                    }
+                }
+                console.log("generated = " + generated);
+
+                // Generate an index for the correct choice
+                correctGenerated = genRand(0, generated.length - 1);
+                console.log("correctGenerated = " + correctGenerated);
+                console.log("Correct #: " + generated[correctGenerated]);
+
+                // Get choice names
+                var i;
+                for (i = 0; i < generated.length; i++) {
+                    $.ajax({
+                        url: "data/" + brand["dir"] + "/" + generated[i] + ".json",
+                        dataType: "json",
+                        async: false,
+                        success: function(namedata) {
+                            var sname = namedata.name;
+                            choiceNames[i] = name + " " + sname;
+                            // Get the image as well for the correct choice
+                            if (i == correctGenerated) {
+                                correctImg = namedata.img;
+                            }
+                        }
+                    });
+                }
+                console.log("choiceNames = " + choiceNames.join(","));
+                console.log("correctImg = " + correctImg);
             }
-            console.log("choiceNames = " + choiceNames.join(","));
-            console.log("correctImg = " + correctImg);
-        }});
+        });
 
     }
 
@@ -159,7 +160,7 @@ function game(brandnumber) {
         // Check if correct
         var correct = false;
         for (b = 0; b < choiceIds.length; b++) {
-            if (this.id == "b" + (correctGenerated+1)) {
+            if (this.id == "b" + (correctGenerated + 1)) {
                 correct = true;
             }
         }
@@ -196,7 +197,7 @@ $(document).ready((function() {
             }
         }
     });
-    
+
     // Setup choiceIds to have correct button IDs
     for (i = 1; i <= choiceIds.length; i++) {
         choiceIds[i - 1] = "#b" + i;
