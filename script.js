@@ -7,9 +7,6 @@ function genRand(min, max) {
     return Math.floor((Math.random() * (max + 1)) + min);
 }
 
-/* List of arrays that contain IDs of shoes to be removed after usage 
-var availabe_shoes = [];*/
-
 /* 0: Correct, 1: Incorrect, 2: Pass */
 var score = [0, 0, 0];
 /* Choice button IDs */
@@ -22,6 +19,11 @@ var choiceNames = new Array(generated.length);
 var correctGenerated;
 /* The correct answer image URL */
 var correctImg = "images/icon.png";
+/*
+ * Array of shoe IDs that have been used as correct answer.
+ * If the brand has releases, it should store arrays with the IDs.
+ */
+//var usedShoes = [];
 
 /*
  * Create HTML right/wrong alert.
@@ -79,25 +81,17 @@ function game(brandnumber) {
             async: false,
             success: function(jsondata) {
                 var brand = jsondata[brandnumber];
-                console.log("brand dir: " + brand["dir"]);
                 var name = brand["name"];
-                console.log("name = " + name);
 
-                // Generate 3 different random integers as choices
+                // Generate an index for the correct choice
+                correctGenerated = genRand(0, generated.length - 1);
+
+                // Generate different random integers as choices
                 var successfulAdded = 0;
                 while (successfulAdded < generated.length) {
-                    var gen = genRand(1, brand["max"] - 1 /* available_shoes[availabe_shoes.length - 1]*/ );
-                    // Check if in available shoes
-                    /*var i;
-                    for (i = 0; i < availabe_shoes.length; i++ ) {
-                        var b;
-                        for (b = 0; b < availabe_shoes[i].length; b++) {
-                            if (gen == )
-                        }
-                    }*/
+                    var gen = genRand(1, brand["max"] - 1);
                     // Check if integer exists in generated
                     var notExistent = true;
-                    //var i;
                     for (i = 0; i < generated.length; i++) {
                         if (gen == generated[i]) {
                             notExistent = false;
@@ -109,11 +103,8 @@ function game(brandnumber) {
                         successfulAdded++;
                     }
                 }
-                console.log("generated = " + generated);
 
-                // Generate an index for the correct choice
-                correctGenerated = genRand(0, generated.length - 1);
-                console.log("correctGenerated = " + correctGenerated);
+                console.log("generated = " + generated);
                 console.log("Correct #: " + generated[correctGenerated]);
 
                 // Get choice names
@@ -183,6 +174,7 @@ function game(brandnumber) {
 
 $(document).ready((function() {
     $("#game").hide();
+
     // store button IDs to check on later
     var button_list = [];
     $.ajax({
