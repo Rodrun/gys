@@ -39,7 +39,7 @@ function createBanner(correctname, correct) {
     } else {
         return beginning + "danger'><strong>Wrong!</strong> The shoe was " + correctname + close;
     }
-    return "<p style='text-align:center;'>???</p>";
+    //return "<p style='text-align:center;'>???</p>";
 }
 
 /*
