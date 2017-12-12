@@ -116,7 +116,7 @@ function game(brandnumber) {
                         async: false,
                         success: function(namedata) {
                             var sname = namedata.name;
-                            choiceNames[i] = name + " " + sname;
+                            choiceNames[i] = sname;
                             // Get the image as well for the correct choice
                             if (i == correctGenerated) {
                                 correctImg = namedata.img;
